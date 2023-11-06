@@ -82,7 +82,7 @@ def instantiate_from_config(config):
         elif config == "__is_unconditional__":
             return None
         raise KeyError("Expected key `target` to instantiate.")
-    return get_obj_from_str(config["target"])(**config.get("params", dict()))
+    return get_obj_from_str(config["target"])(**config.get("params", dict())) # config["target"] - 'ldm.models.diffusion.ddpm_edit.LatentDiffusion'
 
 
 def get_obj_from_str(string, reload=False):
@@ -201,3 +201,72 @@ def parallel_data_prefetch(
         return out
     else:
         return gather_res
+    
+# config.get("params", dict())
+# {
+#   'linear_start': 0.00085, 
+#   'linear_end': 0.012, 
+#   'num_timesteps_cond': 1, 
+#   'log_every_t': 200, 
+#   'timesteps': 1000, 
+#   'first_stage_key': 'edited', 
+#   'cond_stage_key': 'edit', 
+#   'image_size': 16, 
+#   'channels': 4, 
+#   'cond_stage_trainable': False, 
+#   'conditioning_key': 'hybrid', 
+#   'monitor': 'val/loss_simple_ema', 
+#   'scale_factor': 0.18215, 
+#   'use_ema': True, 
+#   'load_ema': True, 
+#   'scheduler_config': {
+#       'target': 'ldm.lr_scheduler.LambdaLinearScheduler', 
+#       'params': {'warm_up_steps': [0], 
+#       'cycle_lengths': [10000000000000], 
+#       'f_start': [1e-06], 
+#       'f_max': [1.0], 
+#       'f_min': [1.0]}},
+#       'unet_config': {
+#           'target': 'ldm.modules.diffusionmodules.openaimodel.UNetModel', 
+#           'params': {
+#               'image_size': 32, 
+#               'in_channels': 8, 
+#               'out_channels': 4, 
+#               'model_channels': 320, 
+#               'attention_resolutions': [4, 2, 1], 
+#               'num_res_blocks': 2, 
+#               'channel_mult': [1, 2, 4, 4], 
+#               'num_heads': 8, 
+#               'use_spatial_transformer': True, 
+#               'transformer_depth': 1, 
+#               'context_dim': 768, 
+#               'use_checkpoint': True, 
+#               'legacy': False
+#           }
+#       }, 
+#       'first_stage_config': {
+#           'target': 'ldm.models.autoencoder.AutoencoderKL', 
+#           'params': {
+#               'embed_dim': 4, 
+#               'monitor': 'val/rec_loss', 
+#               'ddconfig': {
+#                   'double_z': True, 
+#                   'z_channels': 4, 
+#                   'resolution': 256, 
+#                   'in_channels': 3, 
+#                   'out_ch': 3, 
+#                   'ch': 128, 
+#                   'ch_mult': [1, 2, 4, 4], 
+#                   'num_res_blocks': 2, 
+#                   'attn_resolutions': [], 
+#                   'dropout': 0.0
+#               }, 
+#               'lossconfig': {
+#                   'target': 'torch.nn.Identity'
+#               }
+#           }
+#       }, 
+#       'cond_stage_config': {
+#           'target': 'ldm.modules.encoders.modules.FrozenCLIPEmbedder'
+#       }
+#   }
